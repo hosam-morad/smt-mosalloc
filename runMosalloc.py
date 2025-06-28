@@ -71,6 +71,7 @@ def run_benchmark(environ):
                                    '-h' + str(huge_pages)])
 
         command_line = [args.dispatch_program] + args.dispatch_args
+        print(environ.get("HPC_ANALYZE_HPBRS", "0"))
         p = subprocess.Popen(command_line, env=environ, shell=False)
         p.wait()
         sys.exit(p.returncode)
@@ -93,10 +94,13 @@ environ = {"HPC_CONFIGURATION_FILE": args.configuration_pools_file,
            "HPC_MMAP_FIRST_FIT_LIST_SIZE": str(convert_size_string_to_bytes("1MB")),
            "HPC_FILE_BACKED_FIRST_FIT_LIST_SIZE": str(convert_size_string_to_bytes("10KB"))}
 
+print(environ.get("HPC_ANALYZE_HPBRS", "0"))
 if args.analyze:
     environ["HPC_ANALYZE_HPBRS"] = "1"
+print(environ.get("HPC_ANALYZE_HPBRS", "0"))
 
 environ.update(os.environ)
+print(environ.get("HPC_ANALYZE_HPBRS", "0"))
 
 # update the LD_PRELOAD to include our library besides others if exist
 ld_preload = os.environ.get("LD_PRELOAD")
