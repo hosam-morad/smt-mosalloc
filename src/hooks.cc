@@ -27,7 +27,7 @@ std::mutex g_hook_mmap_mutex;
 //std::mutex g_hook_malloc_mutex;
 bool alloc_request_intercepted = false;
 
-extern "C" void* (*__morecore)(intptr_t);
+// extern "C" void* (*__morecore)(intptr_t);
 
 //void *(*__morecore)(ptrdiff_t) = sbrk;
 //__morecore = sbrk;
