@@ -104,7 +104,7 @@ ld_preload = os.environ.get("LD_PRELOAD")
 if ld_preload is None:
     environ["LD_PRELOAD"] = args.library
 else:
-    environ["LD_PRELOAD"] = ld_preload + ':' + args.librarySS
+    environ["LD_PRELOAD"] = ld_preload + ':' + args.library
 
 # check if configuration.txt file exists and if so compare with current parameters
 #update_config_file()  #TODO: Alon&Yaron code, should be tested
