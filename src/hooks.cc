@@ -117,7 +117,7 @@ static void setup_morecore() {
 static void activate_mosalloc() {
     is_library_initialized = true;
     setup_morecore();
-    consume_glibc_free_slots();
+    // consume_glibc_free_slots();
 }
 
 static void deactivate_mosalloc() {
@@ -188,6 +188,7 @@ int brk(void *addr) __THROW_EXCEPTION {
 }
 
 void *mosalloc_morecore(intptr_t increment) __THROW_EXCEPTION {
+    fprintf(stderr, "mosalloc_morecore triggered\n");
     alloc_request_intercepted = true;
     void* ptr = sbrk(increment);
     return ptr;
