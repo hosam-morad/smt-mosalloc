@@ -65,6 +65,7 @@ bool is_inside_malloc_api = false;
  * Mosalloc to force all allocation requests to be served by Mosalloc pools.
  */
 void consume_glibc_free_slots() {
+    int attempts = 0;
     size_t chunk_size = 16;
     while(true) {
         alloc_request_intercepted = false;
@@ -75,6 +76,10 @@ void consume_glibc_free_slots() {
         }
         if (alloc_request_intercepted == true) {
             //local_glibc_funcs.CallGlibcMalloc(4096 - chunk_size - 16);
+            break;
+        }
+        if (++attempts > 1000) {
+            fprintf(stderr, "Too many attempts; breaking.\n");
             break;
         }
     }
@@ -105,14 +110,14 @@ static void setup_morecore() {
     // memory allocation arenas if mutex contention is detected (in a
     // multi-threaded applications)
     mallopt(M_ARENA_MAX, 1);
-    
+
     __morecore = mosalloc_morecore;
 }
 
 static void activate_mosalloc() {
     is_library_initialized = true;
     setup_morecore();
-    consume_glibc_free_slots();
+    //consume_glibc_free_slots();
 }
 
 static void deactivate_mosalloc() {
