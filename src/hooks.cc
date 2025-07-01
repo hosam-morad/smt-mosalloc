@@ -66,7 +66,7 @@ bool is_inside_malloc_api = false;
  */
 void consume_glibc_free_slots() {
     int attempts = 0;
-    size_t chunk_size = 16;
+    size_t chunk_size = 512;
     while(true) {
         alloc_request_intercepted = false;
         GlibcAllocationFunctions local_glibc_funcs;
@@ -78,10 +78,10 @@ void consume_glibc_free_slots() {
             //local_glibc_funcs.CallGlibcMalloc(4096 - chunk_size - 16);
             break;
         }
-        if (++attempts > 1000) {
-            fprintf(stderr, "Too many attempts; breaking.\n");
-            break;
-        }
+        // if (++attempts > 1000) {
+        //     fprintf(stderr, "Too many attempts; breaking.\n");
+        //     break;
+        // }
     }
 }
 
@@ -117,7 +117,7 @@ static void setup_morecore() {
 static void activate_mosalloc() {
     is_library_initialized = true;
     setup_morecore();
-    //consume_glibc_free_slots();
+    consume_glibc_free_slots();
 }
 
 static void deactivate_mosalloc() {
