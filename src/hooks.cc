@@ -86,6 +86,7 @@ void consume_glibc_free_slots() {
 }
 
 static void setup_morecore() {
+    printf("\nEnter setup morecore\n");
     GlibcAllocationFunctions local_glibc_funcs;
     void* temp_brk_top = local_glibc_funcs.CallGlibcSbrk(0);
     temp_brk_top = (void*)ROUND_UP((size_t)temp_brk_top, PageSize::HUGE_1GB);
@@ -111,7 +112,10 @@ static void setup_morecore() {
     // multi-threaded applications)
     mallopt(M_ARENA_MAX, 1);
 
+    printf("\nsetup morecore: prior override\n");
     __morecore = mosalloc_morecore;
+    printf("\nsetup morecore: post override\n");
+
 }
 
 static void activate_mosalloc() {
